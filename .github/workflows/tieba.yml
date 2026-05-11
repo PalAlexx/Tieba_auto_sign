@@ -1,22 +1,16 @@
-name: Tieba Sign
-
-on:
-  workflow_dispatch:
-  schedule:
-    - cron: '30 18 * * *'   # 每天 UTC 时间 18:30，对应北京时间凌晨 2:30
-
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true   # 强制使用 Node.js 24
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      TIEBA_COOKIES: ${{ secrets.TIEBA_COOKIES }}   # 绑定环境变量
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4   # 升级到 v4，支持 Node.js 24
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v5   # 升级到 v5，支持 Node.js 24
+        uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
@@ -27,4 +21,4 @@ jobs:
 
       - name: Run Tieba Sign script
         run: |
-          python 1.py
+          python run_tieba_qiandao.py
